@@ -1,6 +1,8 @@
 # infraT2
 
-Trabalho da disciplina de Infraestrutura e Gestão de Dados;
+Trabalho da disciplina de Infraestrutura e Gestão de Dados - Aluno Lucas Volkweis.
+
+O objetivo deste trabalho é desenvolver um sistema que permita realizar consultas e inserções em um banco de dados relacional com informações sobre aeroportos e voos ao redor do mundo. Em seguida, esses dados serão replicados e enviados para uma instância na AWS utilizando o banco de dados NoSQL DataStax Cassandra, permitindo consultas também nesse ambiente distribuído. O foco está na integração e gerenciamento dos dados entre os dois sistemas, incluindo a extração, transformação e carga (ETL), de forma a garantir a consistência e disponibilidade das informações em ambas as plataformas.
 
 Etapa 1 - Descrição de cada consulta.
 
