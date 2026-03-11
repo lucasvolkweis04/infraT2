@@ -1,34 +1,77 @@
-# infraT2
+# ✈️ Integração e Gestão de Dados Aéreos: Do Relacional ao NoSQL Distribuído (infraT2)
 
-Trabalho da disciplina de Infraestrutura e Gestão de Dados - Aluno Lucas Volkweis.
+## 🎯 O Contexto e o Desafio
 
-O objetivo deste trabalho é desenvolver um sistema que permita realizar consultas e inserções em um banco de dados relacional com informações sobre aeroportos e voos ao redor do mundo. Em seguida, esses dados serão replicados e enviados para uma instância na AWS utilizando o banco de dados NoSQL DataStax Cassandra, permitindo consultas também nesse ambiente distribuído. O foco está na integração e gerenciamento dos dados entre os dois sistemas, incluindo a extração, transformação e carga (ETL), de forma a garantir a consistência e disponibilidade das informações em ambas as plataformas.
+Sistemas de aviação lidam com um volume massivo de informações globais em tempo real. Enquanto bancos de dados relacionais garantem a integridade rigorosa para transações iniciais, a necessidade de alta disponibilidade e escalabilidade global frequentemente exige a adoção de bancos de dados NoSQL distribuídos.
 
-Etapa 1 - Descrição de cada consulta.
+O objetivo deste projeto é demonstrar a arquitetura e a transição de dados entre esses dois mundos. O sistema realiza a gestão de voos, aeroportos, reservas e passageiros em um banco relacional clássico e implementa um pipeline ETL (Extração, Transformação e Carga) para replicar essas informações em um ambiente NoSQL distribuído na AWS, utilizando DataStax Cassandra. O foco é garantir a consistência dos dados, viabilizando consultas analíticas e operacionais em ambas as plataformas.
 
-Sequência 1 (Q1 → Q2)
-Q1: Encontre todos os voos disponíveis entre dois aeroportos específicos para uma data de
-partida fornecida.
-Descrição: Permite que o usuário visualize as opções de voo entre duas localidades para uma data específica.
-Q2: Obtenha detalhes sobre um voo específico, incluindo informações da companhia aérea, tipo de avião e capacidade.
-Descrição: Ajuda a obter detalhes do voo selecionado, incluindo informações sobre o avião e a companhia aérea;
+---
 
-Sequência 2 (Q3 → Q4)
-Q3: Encontre todos os passageiros com reservas para um determinado voo.
-Descrição: Facilita a verificação de passageiros associados a um voo específico.
-Q4: Exiba detalhes do passageiro, incluindo informações de contato e endereço.
-Descrição: Permite visualizar as informações completas de contato de um passageiro específico;
+## 🏗️ Arquitetura e Tecnologias
 
-Sequência 3 (Q5 → Q6)
-Q5: Encontre a lista de voos que partem de um determinado aeroporto em uma data
-específica, com informações sobre a companhia aérea e o avião.
-Descrição: Oferece uma visão geral dos voos que saem de um aeroporto específico em uma determinada data, útil para planejamento e gerenciamento de voos.
-Q6: Verifique o status de uma reserva específica usando o “booking_id”.
-Descrição: Permite que um usuário ou funcionário verifique o status de uma reserva específica;
+O projeto foi estruturado para simular um ambiente corporativo real de migração e sincronização de dados:
 
-Sequência 4 (Q7 → Q8)
-Q7: Quantidade de aviões com destino para uma cidade específica.
-Objetivo: Determinar o número de aviões programados para chegar a uma cidade
-específica, para avaliar o tráfego aéreo esperado.
-Q8: Quantidade total de passageiros para voos com destino à cidade específica.
-Objetivo: Calcular a quantidade total de passageiros que se deslocam para um aeroporto específico em um determinado dia;
+**Banco de Dados Relacional (Origem)**  
+Responsável pelas operações transacionais (ACID) iniciais e armazenamento estruturado dos dados de voos, passageiros e aeroportos.
+
+**Pipeline ETL**  
+Lógica de extração dos dados relacionais, transformação para o modelo orientado a colunas/famílias, e carga contínua.
+
+**DataStax Cassandra (Destino)**  
+Banco de dados NoSQL altamente escalável.
+
+**Infraestrutura Cloud**  
+Hospedagem da instância do Cassandra utilizando **Amazon Web Services (AWS)**, permitindo consultas distribuídas e alta disponibilidade.
+
+---
+
+## 🗄️ Modelagem de Consultas (Fluxos Operacionais)
+
+Para validar a modelagem e a eficiência do sistema, foram desenvolvidas quatro sequências lógicas de consultas (Queries), que simulam o uso real da aplicação por clientes e administradores.
+
+---
+
+### 🗺️ Sequência 1: Planejamento e Detalhamento de Voo
+
+**Q1 (Busca de Voos)**  
+Encontra todos os voos disponíveis entre dois aeroportos específicos para uma data de partida fornecida. Permite ao usuário visualizar as opções de rota.
+
+**Q2 (Detalhes da Aeronave)**  
+A partir da Q1, obtém detalhes profundos sobre o voo selecionado, incluindo dados da companhia aérea, modelo do avião e capacidade total.
+
+---
+
+### 👥 Sequência 2: Gestão de Passageiros
+
+**Q3 (Manifesto de Voo)**  
+Retorna a lista completa de passageiros com reservas confirmadas para um determinado voo.
+
+**Q4 (Ficha do Passageiro)**  
+A partir da Q3, exibe os detalhes individuais de um passageiro selecionado, englobando informações restritas de contato e endereço.
+
+---
+
+### 🛫 Sequência 3: Operações de Aeroporto e Status
+
+**Q5 (Painel de Partidas)**  
+Lista todos os voos que partem de um aeroporto específico em uma data determinada (incluindo companhia e aeronave). Fundamental para o gerenciamento do pátio e planejamento diário.
+
+**Q6 (Rastreio de Reserva)**  
+Permite que funcionários ou clientes verifiquem o status atualizado de uma reserva específica através do `booking_id`.
+
+---
+
+### 📊 Sequência 4: Análise de Tráfego e Demanda
+
+**Q7 (Previsão de Tráfego Aéreo)**  
+Calcula a quantidade total de aeronaves com destino programado para uma cidade específica, auxiliando na previsão de capacidade do aeroporto.
+
+**Q8 (Estimativa de Fluxo de Pessoas)**  
+Retorna a quantidade total de passageiros em deslocamento para essa mesma cidade em um determinado dia, gerando métricas de demanda turística ou comercial.
+
+---
+
+## 👨🏻‍💻 Autoria
+
+Desenvolvido por **Lucas Volkweis** como **Trabalho 2 (T2)** da disciplina de **Infraestrutura e Gestão de Dados (PUCRS)**.
